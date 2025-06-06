@@ -1,487 +1,412 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>F1 2025 Kalender & TV-Zeiten</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <title>F1 2025 Race Schedule</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap');
+
         :root {
-            --bg-color: #121212;
-            --card-bg-color: #1e1e1e;
-            --primary-text-color: #e0e0e0;
-            --secondary-text-color: #a0a0a0;
-            --accent-color: #e10600; /* F1 Red */
-            --sprint-accent-color: #00a1ff;
-            --border-color: #333333;
-            --shadow-color: rgba(0, 0, 0, 0.4);
-        }
-
-        *, *::before, *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        html {
-            scroll-behavior: smooth;
+            --primary-color: #e10600;
+            --secondary-color: #ffffff;
+            --background-color: #121212;
+            --card-background-color: #1e1e1e;
+            --text-color: #f0f0f0;
+            --subtle-text-color: #a0a0a0;
         }
 
         body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--primary-text-color);
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            margin: 0;
             line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            opacity: 0;
-            animation: fadeIn 1s ease-in-out forwards;
+            overflow-x: hidden;
+            background-image: url('https://www.formula1.com/etc/designs/fom-website/images/f1-default-share.jpg');
+            background-size: cover;
+            background-position: center center;
+            background-attachment: fixed;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
+        .main-container {
+            background-color: rgba(18, 18, 18, 0.9);
             padding: 2rem;
+            min-height: 100vh;
         }
 
-        header {
+        .header {
             text-align: center;
-            margin-bottom: 2rem;
-            border-bottom: 2px solid var(--accent-color);
-            padding-bottom: 1rem;
+            margin-bottom: 3rem;
         }
 
-        header h1 {
+        .header h1 {
+            font-family: 'Orbitron', sans-serif;
             font-size: 3rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-            color: var(--primary-text-color);
+            color: var(--primary-color);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 0;
         }
 
-        header h1 span {
-            color: var(--accent-color);
+        .header p {
+            font-size: 1.2rem;
+            color: var(--subtle-text-color);
         }
 
         .countdown-container {
-            background: var(--card-bg-color);
-            border-radius: 12px;
-            padding: 2rem;
             text-align: center;
             margin-bottom: 3rem;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 8px 24px var(--shadow-color);
+            background-color: var(--card-background-color);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid var(--primary-color);
+            box-shadow: 0 0 20px rgba(225, 6, 0, 0.5);
         }
 
-        .countdown-container h2 {
-            font-size: 1.2rem;
-            font-weight: 300;
-            color: var(--secondary-text-color);
-            text-transform: uppercase;
-            letter-spacing: 2px;
+        #next-session-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            color: var(--secondary-color);
             margin-bottom: 0.5rem;
         }
 
-        .countdown-container h3 {
-            font-size: 2.5rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: var(--primary-text-color);
-        }
-        
-        .countdown-container h3 .session-name {
-            color: var(--accent-color);
+        #next-session-info {
+            font-size: 1.2rem;
+            color: var(--subtle-text-color);
+            margin-bottom: 1.5rem;
         }
 
         #countdown {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3.5rem;
+            color: var(--primary-color);
             display: flex;
             justify-content: center;
-            gap: 1.5rem;
-            margin-top: 1.5rem;
+            gap: 1rem;
         }
 
-        .time-block {
-            display: flex;
-            flex-direction: column;
+        .countdown-item {
+            background: var(--background-color);
+            padding: 1rem;
+            border-radius: 8px;
+            min-width: 100px;
         }
 
-        .time-block .value {
-            font-size: 3rem;
-            font-weight: 700;
-            color: var(--primary-text-color);
-            line-height: 1;
-        }
-
-        .time-block .label {
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            color: var(--secondary-text-color);
-        }
-        
-        #local-time-info {
-            margin-top: 1.5rem;
+        .countdown-item span {
+            display: block;
             font-size: 1rem;
-            color: var(--primary-text-color);
-        }
-        
-        #local-time-info strong {
-            color: var(--accent-color);
+            color: var(--subtle-text-color);
         }
 
-        .calendar-grid {
+        .schedule-controls {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        #search-box {
+            width: 50%;
+            padding: 0.75rem;
+            font-size: 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--subtle-text-color);
+            background-color: var(--card-background-color);
+            color: var(--text-color);
+        }
+
+        .schedule-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             gap: 1.5rem;
         }
 
         .race-card {
-            background-color: var(--card-bg-color);
+            background-color: var(--card-background-color);
             border-radius: 12px;
-            border: 1px solid var(--border-color);
             padding: 1.5rem;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            display: flex;
-            flex-direction: column;
+            border-left: 5px solid var(--primary-color);
         }
 
         .race-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 20px var(--shadow-color);
-        }
-        
-        .race-card.sprint-weekend {
-            border-left: 5px solid var(--sprint-accent-color);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
         }
 
-        .race-card.past-event {
-            opacity: 0.5;
-            filter: grayscale(50%);
-        }
-
-        .card-header {
-            margin-bottom: 1rem;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 1rem;
-        }
-
-        .card-header h4 {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: var(--primary-text-color);
-        }
-        
-        .card-header h4 .sprint-star {
-            color: var(--sprint-accent-color);
-            font-size: 1.2rem;
-            margin-left: 0.25rem;
-        }
-
-        .card-header p {
+        .race-card.sprint .race-header h2::after {
+            content: '★ Sprint';
             font-size: 0.9rem;
-            color: var(--secondary-text-color);
+            color: var(--primary-color);
+            margin-left: 10px;
+            font-family: 'Roboto', sans-serif;
         }
         
-        .sessions-list {
-            list-style: none;
-            flex-grow: 1;
+        .race-header {
+            margin-bottom: 1rem;
         }
 
-        .sessions-list li {
+        .race-header h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            margin: 0;
+            color: var(--secondary-color);
+        }
+
+        .race-header p {
+            font-size: 1rem;
+            color: var(--subtle-text-color);
+            margin: 0;
+        }
+
+        .session-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .session-item {
             display: flex;
             justify-content: space-between;
-            padding: 0.5rem 0;
-            border-bottom: 1px solid #2a2a2a;
-        }
-        
-        .sessions-list li:last-child {
-            border-bottom: none;
-        }
-        
-        .sessions-list li span:first-child {
-            font-weight: 600;
-            color: var(--primary-text-color);
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #333;
         }
 
-        .sessions-list li span:last-child {
-            font-weight: 400;
-            color: var(--secondary-text-color);
-            text-align: right;
+        .session-item:last-child {
+            border-bottom: none;
+        }
+
+        .session-name {
+            font-weight: bold;
+            color: var(--text-color);
+        }
+
+        .session-time {
+            font-weight: 300;
+            color: var(--subtle-text-color);
         }
         
-        footer {
-            text-align: center;
-            margin-top: 4rem;
-            padding-top: 2rem;
-            border-top: 1px solid var(--border-color);
-            color: var(--secondary-text-color);
-            font-size: 0.9rem;
+        .race-card.past {
+            opacity: 0.6;
+            border-left-color: #555;
+        }
+        
+        .race-card.next {
+            border: 2px solid var(--primary-color);
+            box-shadow: 0 0 15px rgba(225, 6, 0, 0.4);
         }
 
         @media (max-width: 768px) {
-            .container {
-                padding: 1rem;
-            }
-            header h1 {
-                font-size: 2.2rem;
-            }
-            .countdown-container h3 {
-                font-size: 1.8rem;
-            }
-            #countdown .value {
+            .header h1 {
                 font-size: 2rem;
             }
-        }
-        
-        @media (max-width: 480px) {
-            .calendar-grid {
-                grid-template-columns: 1fr;
+            #countdown {
+                font-size: 2.5rem;
+                flex-direction: column;
+            }
+            .countdown-item {
+                min-width: unset;
+                width: 80%;
+                margin: 0 auto;
             }
         }
-
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <header>
-            <h1>F1 Kalender <span>2025</span></h1>
+    <div class="main-container">
+        <header class="header">
+            <h1>F1<span style="color: var(--secondary-color);"> 2025</span> Schedule</h1>
+            <p>Your ultimate guide to every session of the 2025 Formula 1 season.</p>
         </header>
 
         <section class="countdown-container">
-            <h2 id="next-session-title">Nächste Session</h2>
-            <h3 id="next-session-name">Lade Daten...</h3>
+            <h2 id="next-session-title">Loading Next Session...</h2>
+            <p id="next-session-info">Calculating time until lights out!</p>
             <div id="countdown">
-                <div class="time-block">
-                    <span id="days" class="value">--</span>
-                    <span class="label">Tage</span>
-                </div>
-                <div class="time-block">
-                    <span id="hours" class="value">--</span>
-                    <span class="label">Stunden</span>
-                </div>
-                <div class="time-block">
-                    <span id="minutes" class="value">--</span>
-                    <span class="label">Minuten</span>
-                </div>
-                <div class="time-block">
-                    <span id="seconds" class="value">--</span>
-                    <span class="label">Sekunden</span>
-                </div>
+                <div class="countdown-item"><span id="days">00</span><span>Days</span></div>
+                <div class="countdown-item"><span id="hours">00</span><span>Hours</span></div>
+                <div class="countdown-item"><span id="minutes">00</span><span>Minutes</span></div>
+                <div class="countdown-item"><span id="seconds">00</span><span>Seconds</span></div>
             </div>
-            <p id="local-time-info"></p>
         </section>
 
-        <main class="calendar-grid" id="calendar-grid">
-            <!-- Race cards will be injected here by JavaScript -->
-        </main>
-        
-        <footer>
-            <p>Alle Zeiten werden automatisch in Ihre lokale Zeitzone umgerechnet. <br>Kalenderdaten basieren auf dem bereitgestellten CSV.</p>
-        </footer>
+        <section class="full-schedule">
+            <div class="schedule-controls">
+                <input type="text" id="search-box" placeholder="Search for a race (e.g., Monaco)">
+            </div>
+            <div class="schedule-grid" id="schedule-grid">
+                </div>
+        </section>
     </div>
 
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const csvData = `
-"Datum","Veranstaltung","Training 1","Training 2","Training 3","Qualifying","Sprint-Qualifying","Sprint","Rennen"
-"14.–16. März","Australien (Melbourne)","Fr, 13:30 MEZ","Fr, 17:00 MEZ","Sa, 12:30 MEZ","Sa, 16:00 MEZ","–","–","So, 05:00 MEZ"
-"21.–23. März","China (Shanghai) ★","Fr, 04:30 MEZ","–","–","Fr, 08:30 MEZ","Sa, 04:00 MEZ","Sa, 08:00 MEZ","So, 08:00 MEZ"
-"4.–6. April","Japan (Suzuka)","Fr, 03:30 MEZ","Fr, 07:00 MEZ","Sa, 03:30 MEZ","Sa, 07:00 MEZ","–","–","So, 07:00 MEZ"
-"11.–13. April","Bahrain (Sakhir)","Fr, 12:30 MEZ","Fr, 16:00 MEZ","Sa, 13:30 MEZ","Sa, 17:00 MEZ","–","–","So, 17:00 MEZ"
-"18.–20. April","Saudi-Arabien (Dschidda)","Fr, 14:30 MEZ","Fr, 18:00 MEZ","Sa, 15:30 MEZ","Sa, 19:00 MEZ","–","–","So, 19:00 MEZ"
-"2.–4. Mai","Miami (USA) ★","Fr, 17:30 MEZ","–","–","Fr, 21:30 MEZ","Sa, 17:00 MEZ","Sa, 21:00 MEZ","So, 22:00 MEZ"
-"16.–18. Mai","Emilia-Romagna (Imola)","Fr, 13:30 MEZ","Fr, 17:00 MEZ","Sa, 12:30 MEZ","Sa, 16:00 MEZ","–","–","So, 15:00 MEZ"
-"23.–25. Mai","Monaco","Fr, 13:30 MEZ","Fr, 17:00 MEZ","Sa, 12:30 MEZ","Sa, 16:00 MEZ","–","–","So, 15:00 MEZ"
-"30. Mai – 1. Juni","Spanien (Barcelona)","Fr, 13:30 MEZ","Fr, 17:00 MEZ","Sa, 12:30 MEZ","Sa, 16:00 MEZ","–","–","So, 15:00 MEZ"
-"13.–15. Juni","Kanada (Montreal)","Fr, 19:30 MEZ","Fr, 23:00 MEZ","Sa, 18:30 MEZ","Sa, 22:00 MEZ","–","–","So, 20:00 MEZ"
-"27.–29. Juni","Österreich (Spielberg)","Fr, 13:30 MEZ","Fr, 17:00 MEZ","Sa, 12:30 MEZ","Sa, 16:00 MEZ","–","–","So, 15:00 MEZ"
-"4.–6. Juli","Großbritannien (Silverstone)","Fr, 12:30 MEZ","Fr, 16:00 MEZ","Sa, 11:30 MEZ","Sa, 15:00 MEZ","–","–","So, 16:00 MEZ"
-"25.–27. Juli","Belgien (Spa) ★","Fr, 12:30 MEZ","–","–","Fr, 16:30 MEZ","Sa, 12:00 MEZ","Sa, 16:00 MEZ","So, 15:00 MEZ"
-"1.–3. August","Ungarn (Budapest)","Fr, 13:30 MEZ","Fr, 17:00 MEZ","Sa, 12:30 MEZ","Sa, 16:00 MEZ","–","–","So, 15:00 MEZ"
-"29.–31. August","Niederlande (Zandvoort)","Fr, 12:30 MEZ","Fr, 16:00 MEZ","Sa, 11:30 MEZ","Sa, 15:00 MEZ","–","–","So, 15:00 MEZ"
-"5.–7. September","Italien (Monza)","Fr, 13:30 MEZ","Fr, 17:00 MEZ","Sa, 12:30 MEZ","Sa, 16:00 MEZ","–","–","So, 15:00 MEZ"
-"19.–21. September","Aserbaidschan (Baku)","Fr, 10:30 MEZ","Fr, 14:00 MEZ","Sa, 10:30 MEZ","Sa, 14:00 MEZ","–","–","So, 13:00 MEZ"
-"3.–5. Oktober","Singapur","Fr, 11:30 MEZ","Fr, 15:00 MEZ","Sa, 11:30 MEZ","Sa, 15:00 MEZ","–","–","So, 14:00 MEZ"
-"17.–19. Oktober","USA (Austin) ★","Fr, 18:30 MEZ","–","–","Fr, 22:30 MEZ","Sa, 18:00 MEZ","Sa, 22:00 MEZ","So, 21:00 MEZ"
-"24.–26. Oktober","Mexiko (Mexiko-Stadt)","Fr, 19:30 MEZ","Fr, 23:00 MEZ","Sa, 18:30 MEZ","Sa, 22:00 MEZ","–","–","So, 21:00 MEZ"
-"7.–9. November","Brasilien (São Paulo) ★","Fr, 14:30 MEZ","–","–","Fr, 18:30 MEZ","Sa, 14:00 MEZ","Sa, 18:00 MEZ","So, 18:00 MEZ"
-"21.–23. November","Las Vegas (USA)","Fr, 06:30 MEZ","Fr, 10:00 MEZ","Sa, 06:30 MEZ","Sa, 10:00 MEZ","–","–","So, 05:00 MEZ"
-"28.–30. November","Katar (Lusail) ★","Fr, 12:30 MEZ","–","–","Fr, 16:30 MEZ","Sa, 12:00 MEZ","Sa, 16:00 MEZ","So, 17:00 MEZ"
-"5.–7. Dezember","Abu Dhabi (Yas Marina)","Fr, 10:30 MEZ","Fr, 14:00 MEZ","Sa, 11:30 MEZ","Sa, 15:00 MEZ","–","–","So, 14:00 MEZ"
-        `;
+        const schedule = [
+            { event: "Australia (Melbourne)", date: "14–16 March", sprint: false, sessions: { "Practice 1": "2025-03-14T12:30:00Z", "Practice 2": "2025-03-14T16:00:00Z", "Practice 3": "2025-03-15T11:30:00Z", "Qualifying": "2025-03-15T15:00:00Z", "Race": "2025-03-16T04:00:00Z" } },
+            { event: "China (Shanghai)", date: "21–23 March", sprint: true, sessions: { "Practice 1": "2025-03-21T03:30:00Z", "Sprint Qualifying": "2025-03-21T07:30:00Z", "Sprint": "2025-03-22T03:00:00Z", "Qualifying": "2025-03-22T07:00:00Z", "Race": "2025-03-23T07:00:00Z" } },
+            { event: "Japan (Suzuka)", date: "4–6 April", sprint: false, sessions: { "Practice 1": "2025-04-04T02:30:00Z", "Practice 2": "2025-04-04T06:00:00Z", "Practice 3": "2025-04-05T02:30:00Z", "Qualifying": "2025-04-05T06:00:00Z", "Race": "2025-04-06T05:00:00Z" } },
+            { event: "Bahrain (Sakhir)", date: "11–13 April", sprint: false, sessions: { "Practice 1": "2025-04-11T10:30:00Z", "Practice 2": "2025-04-11T14:00:00Z", "Practice 3": "2025-04-12T11:30:00Z", "Qualifying": "2025-04-12T15:00:00Z", "Race": "2025-04-13T15:00:00Z" } },
+            { event: "Saudi Arabia (Jeddah)", date: "18–20 April", sprint: false, sessions: { "Practice 1": "2025-04-18T12:30:00Z", "Practice 2": "2025-04-18T16:00:00Z", "Practice 3": "2025-04-19T13:30:00Z", "Qualifying": "2025-04-19T17:00:00Z", "Race": "2025-04-20T17:00:00Z" } },
+            { event: "Miami (USA)", date: "2–4 May", sprint: true, sessions: { "Practice 1": "2025-05-02T15:30:00Z", "Sprint Qualifying": "2025-05-02T19:30:00Z", "Sprint": "2025-05-03T15:00:00Z", "Qualifying": "2025-05-03T19:00:00Z", "Race": "2025-05-04T20:00:00Z" } },
+            { event: "Emilia-Romagna (Imola)", date: "16–18 May", sprint: false, sessions: { "Practice 1": "2025-05-16T11:30:00Z", "Practice 2": "2025-05-16T15:00:00Z", "Practice 3": "2025-05-17T10:30:00Z", "Qualifying": "2025-05-17T14:00:00Z", "Race": "2025-05-18T13:00:00Z" } },
+            { event: "Monaco", date: "23–25 May", sprint: false, sessions: { "Practice 1": "2025-05-23T11:30:00Z", "Practice 2": "2025-05-23T15:00:00Z", "Practice 3": "2025-05-24T10:30:00Z", "Qualifying": "2025-05-24T14:00:00Z", "Race": "2025-05-25T13:00:00Z" } },
+            { event: "Spain (Barcelona)", date: "30 May–1 June", sprint: false, sessions: { "Practice 1": "2025-05-30T11:30:00Z", "Practice 2": "2025-05-30T15:00:00Z", "Practice 3": "2025-05-31T10:30:00Z", "Qualifying": "2025-05-31T14:00:00Z", "Race": "2025-06-01T13:00:00Z" } },
+            { event: "Canada (Montreal)", date: "13–15 June", sprint: false, sessions: { "Practice 1": "2025-06-13T17:30:00Z", "Practice 2": "2025-06-13T21:00:00Z", "Practice 3": "2025-06-14T16:30:00Z", "Qualifying": "2025-06-14T20:00:00Z", "Race": "2025-06-15T18:00:00Z" } },
+            { event: "Austria (Spielberg)", date: "27–29 June", sprint: false, sessions: { "Practice 1": "2025-06-27T11:30:00Z", "Practice 2": "2025-06-27T15:00:00Z", "Practice 3": "2025-06-28T10:30:00Z", "Qualifying": "2025-06-28T14:00:00Z", "Race": "2025-06-29T13:00:00Z" } },
+            { event: "Great Britain (Silverstone)", date: "4–6 July", sprint: false, sessions: { "Practice 1": "2025-07-04T10:30:00Z", "Practice 2": "2025-07-04T14:00:00Z", "Practice 3": "2025-07-05T09:30:00Z", "Qualifying": "2025-07-05T13:00:00Z", "Race": "2025-07-06T14:00:00Z" } },
+            { event: "Belgium (Spa)", date: "25–27 July", sprint: true, sessions: { "Practice 1": "2025-07-25T10:30:00Z", "Sprint Qualifying": "2025-07-25T14:30:00Z", "Sprint": "2025-07-26T10:00:00Z", "Qualifying": "2025-07-26T14:00:00Z", "Race": "2025-07-27T13:00:00Z" } },
+            { event: "Hungary (Budapest)", date: "1–3 August", sprint: false, sessions: { "Practice 1": "2025-08-01T11:30:00Z", "Practice 2": "2025-08-01T15:00:00Z", "Practice 3": "2025-08-02T10:30:00Z", "Qualifying": "2025-08-02T14:00:00Z", "Race": "2025-08-03T13:00:00Z" } },
+            { event: "Netherlands (Zandvoort)", date: "29–31 August", sprint: false, sessions: { "Practice 1": "2025-08-29T10:30:00Z", "Practice 2": "2025-08-29T14:00:00Z", "Practice 3": "2025-08-30T09:30:00Z", "Qualifying": "2025-08-30T13:00:00Z", "Race": "2025-08-31T13:00:00Z" } },
+            { event: "Italy (Monza)", date: "5–7 September", sprint: false, sessions: { "Practice 1": "2025-09-05T11:30:00Z", "Practice 2": "2025-09-05T15:00:00Z", "Practice 3": "2025-09-06T10:30:00Z", "Qualifying": "2025-09-06T14:00:00Z", "Race": "2025-09-07T13:00:00Z" } },
+            { event: "Azerbaijan (Baku)", date: "19–21 September", sprint: false, sessions: { "Practice 1": "2025-09-19T08:30:00Z", "Practice 2": "2025-09-19T12:00:00Z", "Practice 3": "2025-09-20T08:30:00Z", "Qualifying": "2025-09-20T12:00:00Z", "Race": "2025-09-21T11:00:00Z" } },
+            { event: "Singapore", date: "3–5 October", sprint: false, sessions: { "Practice 1": "2025-10-03T09:30:00Z", "Practice 2": "2025-10-03T13:00:00Z", "Practice 3": "2025-10-04T09:30:00Z", "Qualifying": "2025-10-04T13:00:00Z", "Race": "2025-10-05T12:00:00Z" } },
+            { event: "USA (Austin)", date: "17–19 October", sprint: true, sessions: { "Practice 1": "2025-10-17T16:30:00Z", "Sprint Qualifying": "2025-10-17T20:30:00Z", "Sprint": "2025-10-18T16:00:00Z", "Qualifying": "2025-10-18T20:00:00Z", "Race": "2025-10-19T19:00:00Z" } },
+            { event: "Mexico (Mexico City)", date: "24–26 October", sprint: false, sessions: { "Practice 1": "2025-10-24T17:30:00Z", "Practice 2": "2025-10-24T21:00:00Z", "Practice 3": "2025-10-25T16:30:00Z", "Qualifying": "2025-10-25T20:00:00Z", "Race": "2025-10-26T19:00:00Z" } },
+            { event: "Brazil (São Paulo)", date: "7–9 November", sprint: true, sessions: { "Practice 1": "2025-11-07T13:30:00Z", "Sprint Qualifying": "2025-11-07T17:30:00Z", "Sprint": "2025-11-08T13:00:00Z", "Qualifying": "2025-11-08T17:00:00Z", "Race": "2025-11-09T17:00:00Z" } },
+            { event: "Las Vegas (USA)", date: "21–23 November", sprint: false, sessions: { "Practice 1": "2025-11-21T05:30:00Z", "Practice 2": "2025-11-21T09:00:00Z", "Practice 3": "2025-11-22T05:30:00Z", "Qualifying": "2025-11-22T09:00:00Z", "Race": "2025-11-23T04:00:00Z" } },
+            { event: "Qatar (Lusail)", date: "28–30 November", sprint: true, sessions: { "Practice 1": "2025-11-28T11:30:00Z", "Sprint Qualifying": "2025-11-28T15:30:00Z", "Sprint": "2025-11-29T11:00:00Z", "Qualifying": "2025-11-29T15:00:00Z", "Race": "2025-11-30T16:00:00Z" } },
+            { event: "Abu Dhabi (Yas Marina)", date: "5–7 December", sprint: false, sessions: { "Practice 1": "2025-12-05T09:30:00Z", "Practice 2": "2025-12-05T13:00:00Z", "Practice 3": "2025-12-06T10:30:00Z", "Qualifying": "2025-12-06T14:00:00Z", "Race": "2025-12-07T13:00:00Z" } }
+        ];
 
-        const monthMap = { "Januar": 0, "Februar": 1, "März": 2, "April": 3, "Mai": 4, "Juni": 5, "Juli": 6, "August": 7, "September": 8, "Oktober": 9, "November": 10, "Dezember": 11 };
-        const dayMap = { "Fr": 5, "Sa": 6, "So": 0 };
-        const year = 2025; 
+        document.addEventListener('DOMContentLoaded', () => {
+            const scheduleGrid = document.getElementById('schedule-grid');
+            const searchBox = document.getElementById('search-box');
+            let countdownInterval;
 
-        function parseCSV(data) {
-            const lines = data.trim().split('\n');
-            const headers = lines[0].split(',').map(h => h.replace(/"/g, ''));
-            const rows = lines.slice(1).map(line => {
-                const values = line.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g).map(v => v.replace(/"/g, '').trim());
-                let rowData = {};
-                headers.forEach((header, i) => {
-                    rowData[header] = values[i];
-                });
-                return rowData;
-            });
-            return { headers, rows };
-        }
+            function findNextSession() {
+                const now = new Date();
+                let nextSession = null;
+                let nextRace = null;
+                let sessionName = '';
 
-        function createDateFromSession(dateString, sessionString) {
-            if (!dateString || !sessionString || sessionString === '–') return null;
-
-            // Parse Date Range: "14.–16. März" -> dayStart: 14, monthName: "März"
-            const dateParts = dateString.match(/(\d+).*(?:\d+\.\s)?(.*)/);
-            if (!dateParts) return null;
-            const dayStart = parseInt(dateParts[1], 10);
-            const monthName = dateParts[2].trim();
-            const monthIndex = monthMap[monthName];
-
-            // Parse Session: "Fr, 13:30 MEZ" -> sessionDay: "Fr", time: "13:30"
-            const sessionParts = sessionString.match(/(\w+),\s(\d{2}:\d{2})/);
-            if (!sessionParts) return null;
-            const sessionDayAbbr = sessionParts[1];
-            const time = sessionParts[2];
-            
-            // This is a simplified logic to find the correct date. It assumes Fr/Sa/So are sequential.
-            let day = dayStart;
-            if (sessionDayAbbr === 'Sa') day = dayStart + 1;
-            if (sessionDayAbbr === 'So') day = dayStart + 2;
-
-            // Handle month-crossing weekends (e.g., 30. Mai - 1. Juni)
-            const dateForDayCalc = new Date(year, monthIndex, day);
-            const actualDay = dateForDayCalc.getDate();
-            const actualMonth = dateForDayCalc.getMonth();
-
-            // Check for DST in Central Europe (MEZ/MESZ)
-            // CET (MEZ) is UTC+1. CEST (MESZ) is UTC+2.
-            // Switch is last Sunday of March and last Sunday of October.
-            const tempDate = new Date(Date.UTC(year, actualMonth, actualDay, 12, 0, 0));
-            const startDST = new Date(Date.UTC(year, 2, 31 - new Date(Date.UTC(year, 2, 31)).getUTCDay()));
-            const endDST = new Date(Date.UTC(year, 9, 31 - new Date(Date.UTC(year, 9, 31)).getUTCDay()));
-            const timeZoneOffset = (tempDate > startDST && tempDate < endDST) ? '+02:00' : '+01:00';
-
-            const isoString = `${year}-${String(actualMonth + 1).padStart(2, '0')}-${String(actualDay).padStart(2, '0')}T${time}:00${timeZoneOffset}`;
-            return new Date(isoString);
-        }
-
-        const { headers, rows } = parseCSV(csvData);
-        const sessionHeaders = headers.slice(2);
-        let allSessions = [];
-
-        const raceData = rows.map(row => {
-            const isSprint = row.Veranstaltung.includes('★');
-            const raceName = row.Veranstaltung.replace(' ★', '');
-            const sessions = {};
-            let raceEndDate = null;
-
-            sessionHeaders.forEach(header => {
-                const sessionTime = row[header];
-                if (sessionTime !== '–') {
-                    const date = createDateFromSession(row.Datum, sessionTime);
-                    sessions[header] = date;
-                    if(date){
-                        allSessions.push({
-                            raceName: raceName,
-                            sessionName: header,
-                            date: date
-                        });
-                        if(header === "Rennen") {
-                            raceEndDate = date;
+                for (const race of schedule) {
+                    for (const [name, time] of Object.entries(race.sessions)) {
+                        const sessionTime = new Date(time);
+                        if (sessionTime > now) {
+                            nextSession = sessionTime;
+                            nextRace = race;
+                            sessionName = name;
+                            return { nextSession, nextRace, sessionName };
                         }
                     }
                 }
-            });
-            // if no race date, use the last available session date for past event check
-            if (!raceEndDate) {
-                const availableDates = Object.values(sessions).filter(Boolean).sort((a,b) => b - a);
-                if (availableDates.length > 0) {
-                    raceEndDate = availableDates[0];
+                return { nextSession: null, nextRace: null, sessionName: null };
+            }
+
+            function startCountdown({ nextSession, nextRace, sessionName }) {
+                if (countdownInterval) clearInterval(countdownInterval);
+
+                const titleEl = document.getElementById('next-session-title');
+                const infoEl = document.getElementById('next-session-info');
+                const daysEl = document.getElementById('days');
+                const hoursEl = document.getElementById('hours');
+                const minutesEl = document.getElementById('minutes');
+                const secondsEl = document.getElementById('seconds');
+
+                if (!nextSession) {
+                    titleEl.textContent = "Season Over";
+                    infoEl.textContent = "Thanks for watching! See you next year!";
+                    [daysEl, hoursEl, minutesEl, secondsEl].forEach(el => el.textContent = "00");
+                    return;
                 }
+
+                titleEl.textContent = `Next up: ${sessionName}`;
+                infoEl.textContent = `${nextRace.event} Grand Prix`;
+                
+                const raceCards = document.querySelectorAll('.race-card');
+                raceCards.forEach(card => card.classList.remove('next'));
+                const nextRaceCard = document.getElementById(nextRace.event.replace(/\s+/g, '-'));
+                if (nextRaceCard) {
+                    nextRaceCard.classList.add('next');
+                    nextRaceCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+
+
+                countdownInterval = setInterval(() => {
+                    const now = new Date().getTime();
+                    const distance = nextSession.getTime() - now;
+
+                    if (distance < 0) {
+                        clearInterval(countdownInterval);
+                        // Refresh to find the next session
+                        location.reload(); 
+                        return;
+                    }
+
+                    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                    daysEl.textContent = String(days).padStart(2, '0');
+                    hoursEl.textContent = String(hours).padStart(2, '0');
+                    minutesEl.textContent = String(minutes).padStart(2, '0');
+                    secondsEl.textContent = String(seconds).padStart(2, '0');
+                }, 1000);
             }
 
+            function renderSchedule() {
+                const now = new Date();
+                scheduleGrid.innerHTML = '';
+                schedule.forEach(race => {
+                    const raceCard = document.createElement('div');
+                    raceCard.className = 'race-card';
+                    raceCard.id = race.event.replace(/\s+/g, '-');
+                    if (race.sprint) {
+                        raceCard.classList.add('sprint');
+                    }
+                    
+                    const lastSessionTime = new Date(Object.values(race.sessions).slice(-1)[0]);
+                    if (lastSessionTime < now) {
+                        raceCard.classList.add('past');
+                    }
 
-            return {
-                dateRange: row.Datum,
-                name: raceName,
-                isSprint,
-                sessions,
-                raceEndDate
-            };
-        });
+                    let sessionsHtml = '<ul class="session-list">';
+                    for (const [name, time] of Object.entries(race.sessions)) {
+                        const sessionDate = new Date(time);
+                        const localTime = sessionDate.toLocaleString(undefined, {
+                            weekday: 'short',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            hour12: false
+                        });
+                        sessionsHtml += `
+                            <li class="session-item">
+                                <span class="session-name">${name}</span>
+                                <span class="session-time">${localTime}</span>
+                            </li>
+                        `;
+                    }
+                    sessionsHtml += '</ul>';
 
-        function updateCountdown() {
-            const now = new Date();
-            const futureSessions = allSessions.filter(s => s.date > now).sort((a, b) => a.date - b.date);
-
-            if (futureSessions.length === 0) {
-                document.getElementById('next-session-title').textContent = "Saison beendet";
-                document.getElementById('next-session-name').textContent = "Wir sehen uns 2026!";
-                document.getElementById('countdown').style.display = 'none';
-                return;
+                    raceCard.innerHTML = `
+                        <div class="race-header">
+                            <h2>${race.event}</h2>
+                            <p>${race.date}</p>
+                        </div>
+                        ${sessionsHtml}
+                    `;
+                    scheduleGrid.appendChild(raceCard);
+                });
             }
 
-            const nextSession = futureSessions[0];
-            const timeDiff = nextSession.date.getTime() - now.getTime();
-            
-            const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
-
-            document.getElementById('days').textContent = String(days).padStart(2, '0');
-            document.getElementById('hours').textContent = String(hours).padStart(2, '0');
-            document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
-            document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
-            
-            document.getElementById('next-session-name').innerHTML = `${nextSession.raceName} - <span class="session-name">${nextSession.sessionName}</span>`;
-
-            const localTimeOptions = { weekday: 'long', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit', timeZoneName: 'short' };
-            document.getElementById('local-time-info').innerHTML = `Startet am: <strong>${nextSession.date.toLocaleString(undefined, localTimeOptions)}</strong> (Ihre lokale Zeit)`;
-        }
-
-        function renderCalendar() {
-            const grid = document.getElementById('calendar-grid');
-            const now = new Date();
-            const localTimeOptions = { weekday: 'short', hour: '2-digit', minute: '2-digit' };
-            
-            raceData.forEach(race => {
-                const card = document.createElement('div');
-                card.className = 'race-card';
-                if (race.isSprint) card.classList.add('sprint-weekend');
-                if (race.raceEndDate && race.raceEndDate < now) card.classList.add('past-event');
-
-                const sessionItems = Object.entries(race.sessions)
-                    .map(([name, date]) => {
-                        if (!date) return '';
-                        return `<li><span>${name}</span> <span>${date.toLocaleString(undefined, localTimeOptions)}</span></li>`;
-                    })
-                    .join('');
-
-                card.innerHTML = `
-                    <div class="card-header">
-                        <h4>${race.name} ${race.isSprint ? '<span class="sprint-star">★</span>' : ''}</h4>
-                        <p>${race.dateRange}</p>
-                    </div>
-                    <ul class="sessions-list">
-                        ${sessionItems}
-                    </ul>
-                `;
-                grid.appendChild(card);
+            searchBox.addEventListener('input', (e) => {
+                const searchTerm = e.target.value.toLowerCase();
+                document.querySelectorAll('.race-card').forEach(card => {
+                    const raceName = card.querySelector('h2').textContent.toLowerCase();
+                    if (raceName.includes(searchTerm)) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
             });
-        }
-        
-        renderCalendar();
-        updateCountdown();
-        setInterval(updateCountdown, 1000);
-    });
+
+            // Initial load
+            renderSchedule();
+            const nextSessionData = findNextSession();
+            startCountdown(nextSessionData);
+        });
     </script>
 </body>
 </html>
