@@ -185,10 +185,7 @@
             color: var(--subtle-text-color);
         }
         
-        .race-card.past {
-            opacity: 0.6;
-            border-left-color: #555;
-        }
+        /* Removed .race-card.past styling as past races will be hidden */
         
         .race-card.next {
             border: 2px solid var(--primary-color);
@@ -216,7 +213,6 @@
     <div class="main-container">
         <header class="header">
             <h1>F1<span style="color: var(--secondary-color);"> 2025</span> Schedule</h1>
-            <p>Your ultimate guide to every session of the 2025 Formula 1 season.</p>
         </header>
 
         <section class="countdown-container">
@@ -314,10 +310,19 @@
                 
                 const raceCards = document.querySelectorAll('.race-card');
                 raceCards.forEach(card => card.classList.remove('next'));
-                const nextRaceCard = document.getElementById(nextRace.event.replace(/\s+/g, '-'));
-                if (nextRaceCard) {
-                    nextRaceCard.classList.add('next');
-                    nextRaceCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                
+                // Ensure nextRace and its event name are valid before trying to get element
+                if (nextRace && nextRace.event) {
+                    const nextRaceCard = document.getElementById(nextRace.event.replace(/\s+/g, '-'));
+                    if (nextRaceCard) {
+                        nextRaceCard.classList.add('next');
+                        // Optional: Scroll to the next race card only if it's not already in view
+                        // to avoid jarring scroll on initial load if it's already visible.
+                        const rect = nextRaceCard.getBoundingClientRect();
+                        if (rect.top < 0 || rect.bottom > window.innerHeight) {
+                           nextRaceCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }
+                    }
                 }
 
 
@@ -327,7 +332,7 @@
 
                     if (distance < 0) {
                         clearInterval(countdownInterval);
-                        // Refresh to find the next session
+                        // Refresh to find the next session and re-render schedule
                         location.reload(); 
                         return;
                     }
@@ -348,6 +353,13 @@
                 const now = new Date();
                 scheduleGrid.innerHTML = '';
                 schedule.forEach(race => {
+                    const lastSessionTime = new Date(Object.values(race.sessions).slice(-1)[0]);
+                    
+                    // If the last session of the race is in the past, do not render this race card
+                    if (lastSessionTime < now) {
+                        return; // Skip to the next race in the forEach loop
+                    }
+
                     const raceCard = document.createElement('div');
                     raceCard.className = 'race-card';
                     raceCard.id = race.event.replace(/\s+/g, '-');
@@ -355,10 +367,7 @@
                         raceCard.classList.add('sprint');
                     }
                     
-                    const lastSessionTime = new Date(Object.values(race.sessions).slice(-1)[0]);
-                    if (lastSessionTime < now) {
-                        raceCard.classList.add('past');
-                    }
+                    // The .past class is no longer added as these cards are now hidden
 
                     let sessionsHtml = '<ul class="session-list">';
                     for (const [name, time] of Object.entries(race.sessions)) {
@@ -367,7 +376,7 @@
                             weekday: 'short',
                             hour: '2-digit',
                             minute: '2-digit',
-                            hour12: false
+                            hour12: false // Using 24-hour format for clarity
                         });
                         sessionsHtml += `
                             <li class="session-item">
